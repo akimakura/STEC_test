@@ -11,43 +11,31 @@ for idx in lines:
     word = idx.split("_")
     if word:
         key = word[1].split(".")[0]
-        value = idx.replace("\n", "")
+        value = idx.split('_')[0]
         if key in month_dict:
-            month_dict[key] += value
+            month_dict[key].add(value)
         else:
-            month_dict[key] = value
+            month_dict[key] = set([value])
 
-# находим месяц, в котором есть все оплаты, исходя из условия
-long_value = max(month_dict.values(), key=len)
-long_value = long_value.split('.pdf')
-long_value.pop()
+# находим полный список платежей
+full_value = max(month_dict.values(), key=len)
 
-now_dir = 'чеки_по_папкам'
-os.mkdir(now_dir)
+# создаем папку, куда всё будет записываться
+SOUCE_FILENAME = 'чеки_по_папкам'
+os.mkdir(SOUCE_FILENAME)
 
-#режем значение по пдф, и добавляем расширение .pdf уже во время записи
 for key, value in month_dict.items():
-    month = os.path.join(now_dir, key)
+    month = os.path.join(SOUCE_FILENAME, key)
     os.mkdir(month)
 
-    pdf_split = value.split('.pdf')
-    pdf_split.pop()
-
-    # делим самый длинный месяц, на название услуг
-    longe = []
-    for i in range(len(long_value)):
-        longe.append(long_value[i].split('_')[0])
-    # делим месяц из цикла, на название услуг
-    few = []
-    for j in range(len(pdf_split)):
-        few.append(pdf_split[j].split('_')[0])
-    # записываем отсутствующие элемнеты/оплаты
-    missing_elements = [element for element in longe if (element in longe) and (element not in few)]
+    # находим отсутствующие элементы(платежи) и записываем их в текстовик, второе множество это значение словаря
+    element = full_value.difference(value)
     with open(os.path.join(month, (key + '.txt')), 'w') as file:
         file.write(f'не оплачены:\n{key}:\n')
-        for element in missing_elements:
-            file.write(element + '\n')
+        for schet in element:
+            file.write(schet + '\n')
 
-    for i in pdf_split:
-        with open(os.path.join(month, f'{i}.pdf'), 'w') as new_file:
-            new_file.write(value)
+    # записываем наши файлы в папку
+    for i in value:
+       with open(os.path.join(month, f'{i}.pdf'), 'w') as new_file:
+           new_file.write(f'{i}.pdf')

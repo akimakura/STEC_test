@@ -22,25 +22,6 @@ long_value = max(month_dict.values(), key=len)
 long_value = long_value.split('.pdf')
 long_value.pop()
 
-
-# def unpaid_services(list_long, list_now, file_unpaid):
-#     # делим самый длинный месяц, на название услуг
-#     longe = []
-#     for i in range(len(list_long)):
-#         longe.append(long_value[i].split('_')[0])
-#     # делим месяц из цикла, на название услуг
-#     few = []
-#     for j in range(len(list_now)):
-#         few.append(list_now[j].split('_')[0])
-#
-#     # находим отсутствующие элемнеты/оплаты
-#     missing_elements = [element for element in longe if (element in longe) and (element not in few)]
-#     # записываем в файл
-#     with open(file_unpaid, 'w') as file:
-#         for element in missing_elements:
-#             file.write(element + '\n')
-
-
 now_dir = 'чеки_по_папкам'
 os.mkdir(now_dir)
 

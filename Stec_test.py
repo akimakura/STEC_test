@@ -3,7 +3,6 @@ import os
 # читаем файл "чеки.txt" в список lines. Используем -sig, дабы избавиться от '/ufeff'
 with open('чеки.txt', encoding="utf-8-sig") as file:
     lines = file.readlines()
-print(lines)
 
 month_dict = {}
 
@@ -17,8 +16,6 @@ for idx in lines:
             month_dict[key] += value
         else:
             month_dict[key] = value
-print(month_dict)
-
 
 # находим месяц, в котором есть все оплаты, исходя из условия
 long_value = max(month_dict.values(), key=len)

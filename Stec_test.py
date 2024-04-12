@@ -1,5 +1,3 @@
-import os
-
 # читаем файл "чеки.txt" в список lines. Используем -sig, дабы избавиться от '/ufeff'
 with open('чеки.txt', encoding="utf-8-sig") as file:
     lines = file.readlines()
@@ -20,22 +18,18 @@ for idx in lines:
 # находим полный список платежей
 full_value = max(month_dict.values(), key=len)
 
-# создаем папку, куда всё будет записываться
-SOUCE_FILENAME = 'чеки_по_папкам'
-os.mkdir(SOUCE_FILENAME)
-
-for key, value in month_dict.items():
-    month = os.path.join(SOUCE_FILENAME, key)
-    os.mkdir(month)
+with open('чеки_по_папкам.txt', 'w') as new_file:
+    for key, value in month_dict.items():
+        for i in value:
+            new_file.write(f'{key}/{i}_{key}.pdf\n')
 
     # находим отсутствующие элементы(платежи) и записываем их в текстовик, второе множество это значение словаря
-    element = full_value.difference(value)
-    with open(os.path.join(month, (key + '.txt')), 'w') as file:
-        file.write(f'не оплачены:\n{key}:\n')
-        for schet in element:
-            file.write(schet + '\n')
-
-    # записываем наши файлы в папку
-    for i in value:
-       with open(os.path.join(month, f'{i}.pdf'), 'w') as new_file:
-           new_file.write(f'{i}.pdf')
+    new_file.write(f'\nне оплачены:\n')
+    for key, value in month_dict.items():
+        element = full_value.difference(value)
+        new_file.write(f'{key}:\n')
+        if element:
+            for check in element:
+                new_file.write(check + '\n')
+        else:
+            new_file.write('-\n')

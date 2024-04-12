@@ -5,7 +5,6 @@ with open('чеки.txt', encoding="utf-8-sig") as file:
     lines = file.readlines()
 
 month_dict = {}
-
 # распределяем наш список в словарь, где месяц будет ключом
 for idx in lines:
     word = idx.split("_")
